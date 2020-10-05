@@ -1,6 +1,9 @@
 name: Upload
 
-on: push
+on:
+  push :
+    tags :
+      - v1.*
 
 jobs:
   upload:

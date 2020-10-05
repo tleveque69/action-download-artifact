@@ -59,7 +59,7 @@ async function main() {
             branch: branch
         }
         for await (const runs of client.paginate.iterator(endpoint, params)) {
-             artifact =  runs.data.find(async (run) => {
+             run =  runs.data.find(async (run) => {
                 if (commit) {
                     return run.head_sha == commit
                 }
@@ -82,6 +82,7 @@ async function main() {
                         return run.status == "completed"
                 }
             })
+            console.log('breaking run',run)
             if (run) {
                 break
             }

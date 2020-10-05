@@ -67,8 +67,8 @@ async function main() {
                     // No PR or commit was specified just return the first one.
                     // The results appear to be sorted from API, so the most recent is first.
                     // Just check if workflow run completed.
-                    /*console.log('tested run', run.id)
-                    const artifacts = await client.actions.listWorkflowRunArtifacts({
+                    console.log('tested run', run.id)
+                    /*const artifacts = await client.actions.listWorkflowRunArtifacts({
                         owner: owner,
                         repo: repo,
                         run_id: run.id,

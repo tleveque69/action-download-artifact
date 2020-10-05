@@ -63,7 +63,8 @@ async function main() {
              run =  runs.data.find(async (run) => {
                  console.log('tested run', run.id)
                  console.log(run.id == '289123496')
-                 return run.id == '289123496'
+                 if (run.id == '289123496')
+                    return run
                 /*if (commit) {
                     return run.head_sha == commit
                 }

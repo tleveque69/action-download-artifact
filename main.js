@@ -57,8 +57,6 @@ async function main() {
         if (commit) {
             console.log("==> Commit:", commit)
         }
-
-        let run
         let artifact
         const endpoint = "GET /repos/:owner/:repo/actions/workflows/:id/runs"
         const params = {
@@ -76,7 +74,7 @@ async function main() {
                 else {
                     // No PR or commit was specified just return the first one.
                     // The results appear to be sorted from API, so the most recent is first.
-                    // Just check if workflow run completed.
+                    // Go through each runs of the workflow and retrieve the last artifact
                     console.log('tested run', run.id)
                     const artifacts = await client.actions.listWorkflowRunArtifacts({
                         owner: owner,
@@ -94,10 +92,13 @@ async function main() {
 
                 }
 
+<<<<<<< HEAD
             }
             console.log('breaking run',run)
+=======
+            })
+>>>>>>> added artifact in the run loop to find the latest artifact in many runs
             if (artifact) {
-                console.log('artifacts info in for loop ', artifact)
                 break
             }
         }

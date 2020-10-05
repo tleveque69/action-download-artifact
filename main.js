@@ -60,11 +60,11 @@ async function main() {
         }
         for await (const runs of client.paginate.iterator(endpoint, params)) {
             console.log(runs.data.length)
-             run =  runs.data.find(async (run) => {
-                 console.log('tested run', run.id)
-                 console.log(run.id == '289123496')
-                 if (run.id == '289123496')
-                    return run
+             run =  runs.data.find(async (actual) => {
+                 console.log('tested run', actual.id)
+                 console.log(actual.id == '289123496')
+                 if (actual.id == '289123496')
+                    return actual
                 /*if (commit) {
                     return run.head_sha == commit
                 }

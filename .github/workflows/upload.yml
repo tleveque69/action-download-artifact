@@ -13,8 +13,8 @@ jobs:
         run: |
           mkdir artifact
           echo ${{github.sha}} > artifact/sha
-      - name: Upload
-        uses: actions/upload-artifact@v1
-        with:
-          name: artifact
-          path: artifact
+#      - name: Upload
+#        uses: actions/upload-artifact@v1
+#        with:
+#          name: artifact
+#          path: artifact

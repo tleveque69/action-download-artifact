@@ -97,6 +97,7 @@ async function main() {
             }
             console.log('breaking run',run)
             if (artifact) {
+                console.log('artifacts info in for loop ', artifact)
                 break
             }
         }

@@ -60,7 +60,7 @@ async function main() {
         }
         for await (const runs of client.paginate.iterator(endpoint, params)) {
             console.log(runs.data.length)
-             run =  runs.data.find(async (actual) => {
+             run =  runs.data.find((actual) => {
                  console.log('tested run', actual.id)
                  console.log(actual.id == '289123496')
                  if (actual.id == '289123496')

@@ -50,6 +50,7 @@ async function main() {
         }
 
         let run
+        let artifact
         const endpoint = "GET /repos/:owner/:repo/actions/workflows/:id/runs"
         const params = {
             owner: owner,
@@ -58,7 +59,7 @@ async function main() {
             branch: branch
         }
         for await (const runs of client.paginate.iterator(endpoint, params)) {
-             run =  runs.data.find(async (run) => {
+             artifact =  runs.data.find(async (run) => {
                 if (commit) {
                     return run.head_sha == commit
                 }
@@ -66,18 +67,21 @@ async function main() {
                     // No PR or commit was specified just return the first one.
                     // The results appear to be sorted from API, so the most recent is first.
                     // Just check if workflow run completed.
-                    console.log(run)
+                    console.log('tested run', run.id)
                     const artifacts = await client.actions.listWorkflowRunArtifacts({
                         owner: owner,
                         repo: repo,
                         run_id: run.id,
                     })
-                    console.log(artifacts)
-                    if (artifacts.length)
-                        return run.status == "completed"
+                    artifact = artifacts.data.artifacts.find((artifact) => {
+                        return artifact.name == name
+                    })
+                    console.log(artifact)
+                    if (artifact.length)
+                        return artifact
                 }
             })
-            if (run) {
+            if (artifact.id) {
                 break
             }
         }
@@ -102,7 +106,11 @@ async function main() {
         for (const artifact of artifacts) {
             console.log("==> Artifact:", artifact.id)
 
+<<<<<<< HEAD
             const size = filesize(artifact.size_in_bytes, { base: 10 })
+=======
+
+>>>>>>> adding artifact request in run finder to check if an artifact is in this run
 
             console.log("==> Downloading:", artifact.name + ".zip", `(${size})`)
 

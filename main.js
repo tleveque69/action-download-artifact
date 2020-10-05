@@ -86,72 +86,25 @@ async function main() {
                     artifact = artifacts.data.artifacts.find((artifact) => {
                         return artifact.name == name
                     })
-                    if (artifact)
+                    if (artifact) {
+                        console.log("==> Run:", run.id)
                         return artifact
-                    if (run.id == 289123496)
-                        return run.status == "completed"
+                    }
+
                 }
 
-            })
-             /*run =  runs.data.find((actual) => {
-                 console.log('tested run', actual.id)
-                 console.log(actual.id == '289123496')
-                 if (actual.id == '289123496')
-                    return actual
-                if (commit) {
-                    return run.head_sha == commit
-                }
-                else {
-                    // No PR or commit was specified just return the first one.
-                    // The results appear to be sorted from API, so the most recent is first.
-                    // Just check if workflow run completed.
-                    console.log('tested run', run.id)
-                    /!*const artifacts = await client.actions.listWorkflowRunArtifacts({
-                        owner: owner,
-                        repo: repo,
-                        run_id: run.id,
-                    })
-                    artifact = artifacts.data.artifacts.find((artifact) => {
-                        return artifact.name == name
-                    })
-                    if (artifact)
-                        return artifact*!/
-                    if (run.id == 289123496)
-                        return run.status == "completed"
-                }
-            })*/
+            }
             console.log('breaking run',run)
             if (artifact) {
                 break
             }
         }
 
-        console.log("==> Run:", run.id)
-        
-        let artifacts = await client.actions.listWorkflowRunArtifacts({
-            owner: owner,
-            repo: repo,
-            run_id: run.id,
-        })
-
-        // One artifact or all if `name` input is not specified.
-        if (name) {
-            artifacts = artifacts.data.artifacts.filter((artifact) => {
-                return artifact.name == name
-            })
-        } else {
-            artifacts = artifacts.data.artifacts
-        }
-
         for (const artifact of artifacts) {
             console.log("==> Artifact:", artifact.id)
-
-<<<<<<< HEAD
+            
             const size = filesize(artifact.size_in_bytes, { base: 10 })
-=======
-
->>>>>>> adding artifact request in run finder to check if an artifact is in this run
-
+            
             console.log("==> Downloading:", artifact.name + ".zip", `(${size})`)
 
             const zip = await client.actions.downloadArtifact({

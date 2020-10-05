@@ -47,7 +47,7 @@ async function main() {
                     // No PR or commit was specified just return the first one.
                     // The results appear to be sorted from API, so the most recent is first.
                     // Just check if workflow run completed.
-                    core.debug(run)
+                    console.log(run)
                     return run.status == "completed"
                 }
             })

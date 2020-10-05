@@ -83,12 +83,12 @@ async function main() {
                         repo: repo,
                         run_id: run.id,
                     })
-                    console.log(artifacts.data)
                     artifact = artifacts.data.artifacts.find((artifact) => {
                         return artifact.name == name
                     })
                     if (artifact) {
                         console.log("==> Run:", run.id)
+                        console.log('artifacts info', artifact)
                         return artifact
                     }
 

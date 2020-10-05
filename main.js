@@ -99,7 +99,7 @@ async function main() {
                 break
             }
         }
-
+        
         for (const artifact of artifacts) {
             console.log("==> Artifact:", artifact.id)
             
@@ -126,7 +126,6 @@ async function main() {
 
                 console.log(`  ${action}: ${filepath}`)
             })
-
             adm.extractAllTo(dir, true)
         }
     } catch (error) {

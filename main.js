@@ -59,6 +59,7 @@ async function main() {
             branch: branch
         }
         for await (const runs of client.paginate.iterator(endpoint, params)) {
+            console.log(runs.data.length)
              run =  runs.data.find(async (run) => {
                  console.log('tested run', run.id)
                  return run.id == '289123496'

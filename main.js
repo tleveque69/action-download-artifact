@@ -113,7 +113,7 @@ async function main() {
                 artifact_id: artifact.id,
                 archive_format: "zip",
             })
-
+            
             const dir = name ? path : pathname.join(path, artifact.name)
 
             fs.mkdirSync(dir, { recursive: true })

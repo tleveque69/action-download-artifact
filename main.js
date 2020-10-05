@@ -5,6 +5,15 @@ const filesize = require('filesize')
 const pathname = require('path')
 const fs = require("fs")
 
+async function findAsync(arr, asyncCallback) {
+    const promises = arr.map(asyncCallback);
+    const results = await Promise.all(promises);
+    const index = results.findIndex(result => result);
+    return arr[index];
+}
+
+
+
 async function main() {
     try {
         const token = core.getInput("github_token", { required: true })
@@ -60,12 +69,36 @@ async function main() {
         }
         for await (const runs of client.paginate.iterator(endpoint, params)) {
             console.log(runs.data.length)
-             run =  runs.data.find((actual) => {
+            artifact = findAsync(runs.data, async (run) => {
+                if (commit) {
+                    return run.head_sha == commit
+                }
+                else {
+                    // No PR or commit was specified just return the first one.
+                    // The results appear to be sorted from API, so the most recent is first.
+                    // Just check if workflow run completed.
+                    console.log('tested run', run.id)
+                    const artifacts = await client.actions.listWorkflowRunArtifacts({
+                        owner: owner,
+                        repo: repo,
+                        run_id: run.id,
+                    })
+                    artifact = artifacts.data.artifacts.find((artifact) => {
+                        return artifact.name == name
+                    })
+                    if (artifact)
+                        return artifact
+                    if (run.id == 289123496)
+                        return run.status == "completed"
+                }
+
+            })
+             /*run =  runs.data.find((actual) => {
                  console.log('tested run', actual.id)
                  console.log(actual.id == '289123496')
                  if (actual.id == '289123496')
                     return actual
-                /*if (commit) {
+                if (commit) {
                     return run.head_sha == commit
                 }
                 else {
@@ -85,10 +118,10 @@ async function main() {
                         return artifact*!/
                     if (run.id == 289123496)
                         return run.status == "completed"
-                }*/
-            })
+                }
+            })*/
             console.log('breaking run',run)
-            if (run) {
+            if (artifact) {
                 break
             }
         }

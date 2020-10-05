@@ -83,6 +83,7 @@ async function main() {
                         repo: repo,
                         run_id: run.id,
                     })
+                    console.log(artifacts)
                     artifact = artifacts.data.artifacts.find((artifact) => {
                         return artifact.name == name
                     })

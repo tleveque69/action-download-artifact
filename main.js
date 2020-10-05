@@ -69,7 +69,7 @@ async function main() {
         }
         for await (const runs of client.paginate.iterator(endpoint, params)) {
             console.log(runs.data.length)
-            artifact = findAsync(runs.data, async (run) => {
+            artifact = await findAsync(runs.data, async (run) => {
                 if (commit) {
                     return run.head_sha == commit
                 }

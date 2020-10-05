@@ -58,7 +58,7 @@ async function main() {
             branch: branch
         }
         for await (const runs of client.paginate.iterator(endpoint, params)) {
-            run = runs.data.find((run) => {
+             run =  runs.data.find(async (run) => {
                 if (commit) {
                     return run.head_sha == commit
                 }
@@ -67,17 +67,23 @@ async function main() {
                     // The results appear to be sorted from API, so the most recent is first.
                     // Just check if workflow run completed.
                     console.log(run)
-                    return run.status == "completed"
+                    const artifacts = await client.actions.listWorkflowRunArtifacts({
+                        owner: owner,
+                        repo: repo,
+                        run_id: run.id,
+                    })
+                    console.log(artifacts)
+                    if (artifacts.length)
+                        return run.status == "completed"
                 }
             })
-
             if (run) {
                 break
             }
         }
 
         console.log("==> Run:", run.id)
-
+        
         let artifacts = await client.actions.listWorkflowRunArtifacts({
             owner: owner,
             repo: repo,

@@ -76,8 +76,7 @@ async function main() {
                     artifact = artifacts.data.artifacts.find((artifact) => {
                         return artifact.name == name
                     })
-                    console.log(artifact)
-                    if (artifact.length)
+                    if (artifact)
                         return artifact
                 }
             })

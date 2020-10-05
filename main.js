@@ -8,7 +8,7 @@ const fs = require("fs")
 async function findAsync(arr, asyncCallback) {
     const promises = arr.map(asyncCallback);
     const results = await Promise.all(promises);
-    const index = results.findIndex(result => result);
+    const index = results.findIndex((result,name) =>  result.name == name);
     return arr[index];
 }
 

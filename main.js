@@ -80,7 +80,7 @@ async function main() {
                         return artifact
                 }
             })
-            if (artifact.id) {
+            if (artifact) {
                 break
             }
         }

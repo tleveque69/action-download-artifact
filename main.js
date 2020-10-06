@@ -91,13 +91,6 @@ async function main() {
                     }
 
                 }
-
-<<<<<<< HEAD
-            }
-            console.log('breaking run',run)
-=======
-            })
->>>>>>> added artifact in the run loop to find the latest artifact in many runs
             if (artifact) {
                 break
             }

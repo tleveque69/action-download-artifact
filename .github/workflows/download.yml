@@ -1,11 +1,8 @@
 name: Download
 
 on:
-  workflow_run:
-    workflows:
-      - Upload
-    types:
-      - completed
+  push:
+    branch: master
 
 jobs:
   download-latest:

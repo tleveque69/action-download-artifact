@@ -70,8 +70,7 @@ async function main() {
             artifact = await findAsync(runs.data, async (run) => {
                 if (commit) {
                     return run.head_sha == commit
-                }
-                else {
+                } else {
                     // No PR or commit was specified just return the first one.
                     // The results appear to be sorted from API, so the most recent is first.
                     // Go through each runs of the workflow and retrieve the last artifact
@@ -91,39 +90,38 @@ async function main() {
                     }
 
                 }
+            })
             if (artifact) {
                 break
             }
         }
-        
-        for (const artifact of artifacts) {
-            console.log("==> Artifact:", artifact.id)
-            
-            const size = filesize(artifact.size_in_bytes, { base: 10 })
-            
-            console.log("==> Downloading:", artifact.name + ".zip", `(${size})`)
 
-            const zip = await client.actions.downloadArtifact({
-                owner: owner,
-                repo: repo,
-                artifact_id: artifact.id,
-                archive_format: "zip",
-            })
-            
-            const dir = name ? path : pathname.join(path, artifact.name)
+        console.log("==> Artifact:", artifact.id)
 
-            fs.mkdirSync(dir, { recursive: true })
+        const size = filesize(artifact.size_in_bytes, { base: 10 })
 
-            const adm = new AdmZip(Buffer.from(zip.data))
+        console.log("==> Downloading:", artifact.name + ".zip", `(${size})`)
 
-            adm.getEntries().forEach((entry) => {
-                const action = entry.isDirectory ? "creating" : "inflating"
-                const filepath = pathname.join(dir, entry.entryName)
+        const zip = await client.actions.downloadArtifact({
+            owner: owner,
+            repo: repo,
+            artifact_id: artifact.id,
+            archive_format: "zip",
+        })
 
-                console.log(`  ${action}: ${filepath}`)
-            })
-            adm.extractAllTo(dir, true)
-        }
+        const dir = name ? path : pathname.join(path, artifact.name)
+
+        fs.mkdirSync(dir, { recursive: true })
+
+        const adm = new AdmZip(Buffer.from(zip.data))
+
+        adm.getEntries().forEach((entry) => {
+            const action = entry.isDirectory ? "creating" : "inflating"
+            const filepath = pathname.join(dir, entry.entryName)
+
+            console.log(`  ${action}: ${filepath}`)
+        })
+        adm.extractAllTo(dir, true)
     } catch (error) {
         core.setFailed(error.message)
     }
